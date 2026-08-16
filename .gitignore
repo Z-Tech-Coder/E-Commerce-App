@@ -1,0 +1,10 @@
+# IntelliJ IDEA
+.idea/
+**/.idea/
+
+# Maven
+target/
+**/target/
+
+# IntelliJ module files
+*.iml
