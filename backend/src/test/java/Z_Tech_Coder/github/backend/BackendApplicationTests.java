@@ -1,4 +1,4 @@
-package Z_Tech_Coder.example.backend;
+package Z_Tech_Coder.github.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
