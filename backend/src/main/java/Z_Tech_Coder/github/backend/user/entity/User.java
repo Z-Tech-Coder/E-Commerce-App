@@ -25,4 +25,6 @@ public class User { // id name email password
 
     String password;
 
+    UserType userType;
+
 }

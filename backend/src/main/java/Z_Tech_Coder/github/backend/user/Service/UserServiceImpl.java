@@ -30,7 +30,8 @@ public class UserServiceImpl implements UserService {
         if(user.getPassword().equals(loginRequest.password())){
             return new LoginResponse(
                     user.getName(),
-                    user.getEmail()
+                    user.getEmail(),
+                    user.getUserType()
             );
         }else{
             throw new InvalidCredentials("Invalid Credentials");
@@ -49,7 +50,8 @@ public class UserServiceImpl implements UserService {
                     null,
                     signupRequest.name(),
                     signupRequest.email(),
-                    signupRequest.password()
+                    signupRequest.password(),
+                    signupRequest.userType()
                 )
             );
             return new SignupResponse(true);
