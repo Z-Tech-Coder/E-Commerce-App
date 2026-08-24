@@ -1,9 +1,6 @@
 package Z_Tech_Coder.github.backend.user.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +14,7 @@ public class User { // id name email password
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    Long userId;
 
     String name;
 
@@ -25,6 +22,7 @@ public class User { // id name email password
 
     String password;
 
+    @Enumerated(EnumType.STRING)
     UserType userType;
 
 }
