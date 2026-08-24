@@ -1,8 +1,10 @@
 package Z_Tech_Coder.github.backend.product.service;
 
-import Z_Tech_Coder.github.backend.product.service.serviceObj.AddProductRequest;
-import Z_Tech_Coder.github.backend.product.service.serviceObj.AddProductResponse;
+import Z_Tech_Coder.github.backend.product.service.serviceObj.*;
+
 
 public interface ProductService {
-    AddProductResponse addProduct(AddProductRequest product);
+    AddProductResponse addProduct(AddProductRequest addProductRequest);
+    UpdateProductResponse updateProduct(UpdateProductRequest updateProduct);
+    DeleteProductResponse deleteProduct(DeleteProductRequest deleteProductRequest);
 }

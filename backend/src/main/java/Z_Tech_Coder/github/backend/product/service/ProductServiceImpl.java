@@ -6,10 +6,10 @@ import Z_Tech_Coder.github.backend.inventory.entity.Inventory;
 import Z_Tech_Coder.github.backend.product.entity.Product;
 import Z_Tech_Coder.github.backend.inventory.repository.InventoryRepository;
 import Z_Tech_Coder.github.backend.product.repository.ProductRepository;
-import Z_Tech_Coder.github.backend.product.service.serviceObj.AddProductRequest;
-import Z_Tech_Coder.github.backend.product.service.serviceObj.AddProductResponse;
+import Z_Tech_Coder.github.backend.product.service.serviceObj.*;
 import Z_Tech_Coder.github.backend.user.entity.User;
 import Z_Tech_Coder.github.backend.user.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +25,7 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     UserRepository userRepository;
 
+    @Transactional
     @Override
     public AddProductResponse addProduct(AddProductRequest addProductRequest) {// add product to product Table
 
@@ -49,6 +50,63 @@ public class ProductServiceImpl implements ProductService {
 
             return new AddProductResponse(true);
 
+    }
+
+    @Override
+    @Transactional
+    public UpdateProductResponse updateProduct(UpdateProductRequest updateProductRequest) {
+
+        User user = userRepository.findByEmail(updateProductRequest.userEmail())
+                .orElseThrow(()-> new RuntimeException("User not found"));
+
+        Inventory inventory = inventoryRepository.findByVendor(user)
+                .orElseThrow(()-> new RuntimeException("Inventory not found"));
+
+        Product product = productRepository.findById(updateProductRequest.productId())
+                .orElseThrow(()-> new RuntimeException("Incorrect Product ID"));
+
+        if(product.getInventory() == inventory) {
+            if (updateProductRequest.newProductName() != null)
+                product.setName(updateProductRequest.newProductName());
+
+            if (updateProductRequest.newProductDescription() != null)
+                product.setDescription(updateProductRequest.newProductDescription());
+
+            if (updateProductRequest.newProductPrice() != null)
+                product.setPrice(updateProductRequest.newProductPrice());
+
+            if (updateProductRequest.newProductStock() != null)
+                product.setStock(updateProductRequest.newProductStock());
+
+            if (updateProductRequest.newCategoryName() != null) {
+                Category category = categoryRepository.findByName(updateProductRequest.newCategoryName())
+                        .orElseThrow(() -> new RuntimeException("Category not found"));
+                product.setCategory(category);
+            }
+            return new UpdateProductResponse(true);
+        }
+        else  {
+            return new UpdateProductResponse(false);
+        }
+    }
+
+    @Transactional
+    @Override
+    public DeleteProductResponse deleteProduct(DeleteProductRequest deleteProductRequest) {
+        User user = userRepository.findByEmail(deleteProductRequest.userEmail())
+                .orElseThrow(()-> new RuntimeException("User not found"));
+
+        Inventory inventory = inventoryRepository.findByVendor(user)
+                .orElseThrow(() -> new RuntimeException("Inventory not found"));
+
+        Product product = productRepository.findById(deleteProductRequest.productId())
+                .orElseThrow(() -> new RuntimeException("Incorrect Product ID"));
+        if(product.getInventory() == inventory) {
+            productRepository.delete(product);
+            return new DeleteProductResponse(true);
+        }else  {
+            return new DeleteProductResponse(false);
+        }
     }
 }
 
